@@ -1,0 +1,5 @@
+reason_code,n,median_model_score,median_impressions,median_age
+high_risk_high_exposure,730,0.61568214880262,8689.5,86.0
+high_risk_stale_visible,1131,0.6078715162584685,8215.0,218.0
+high_risk_position,1088,0.6066133022241313,5705.5,78.0
+high_risk_general_review,97944,0.5586654658353765,749.0,189.0
