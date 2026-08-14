@@ -7,9 +7,9 @@
 
 ## 0. Abstract
 
-Can historical search-performance and content-lifecycle signals identify content pages that are likely to experience a meaningful decline in organic search impressions over the following 30 days?  
-I used the FlyRank pseudonymized warehouse release, working at the page-client prediction grain with a March 2026 feature window and an April 2026 target window.  
-The first learned model was Logistic Regression using five pre-decision features: previous-30-day impressions, previous-30-day clicks, previous-30-day average position, days with impressions, and content age.  
+>Can historical search-performance and content-lifecycle signals identify content pages that are likely to experience a meaningful decline in organic search impressions over the following 30 days?
+ 
+I used the FlyRank pseudonymized warehouse release, working at the page-client prediction grain with a March 2026 feature window and an April 2026 target window. The first learned model was Logistic Regression using five pre-decision features: previous-30-day impressions, previous-30-day clicks, previous-30-day average position, days with impressions, and content age.  
 On the initial Week-5 evaluation, Logistic Regression reached Precision@20 = 0.60 and Precision@50 = 0.46 versus the transparent baseline's 0.35 and 0.38, while the later grouped-by-client validation showed that performance was lower under the more honest split.  
 The resulting score is therefore best treated as decision-support for prioritizing human review, not as an autonomous instruction to refresh, rewrite, delete, or change a page.
 
