@@ -287,6 +287,22 @@ Human questions:
 - Are there technical or indexing issues?
 - Are competitors or SERP features changing the opportunity?
 
+**4. High-risk + General manual review**
+
+Reason code: `high_risk_general_review`
+
+Use when the model assigns a high risk score but no single diagnostic signal is dominant enough to justify a more specific action.
+
+**Suggested action**: broader manual review.
+
+Human questions:
+- What evidence makes this page look risky?
+- Is the risk consistent with its historical search performance?
+- Is there a content, relevance, technical, or search-intent explanation?
+- Is there enough potential value to justify further investigation?
+
+**Important**: this category should be treated as a fallback, not as evidence that a specific problem has been identified. The model is flagging the page for review; it is not diagnosing the cause of decline.
+
 ### Human-review checklist
 
 Before taking action, a reviewer should check:
