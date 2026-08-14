@@ -1,1 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Predicting Near-Term Organic Search Decline | FlyRank Capstone</title>
+<style>
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;color:#172033;background:#f6f7fb;margin:0}
+main{max-width:960px;margin:0 auto;background:white;padding:48px 56px}
+h1{font-size:2.4rem;line-height:1.15;margin-bottom:.4rem}
+h2{margin-top:2.5rem;border-bottom:1px solid #e6e8ef;padding-bottom:.4rem}
+h3{margin-top:1.8rem}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.94rem}
+th,td{border:1px solid #dfe3eb;padding:9px 10px;text-align:left}
+th{background:#f1f3f7}
+code{background:#f0f2f6;padding:2px 5px;border-radius:4px}
+blockquote{border-left:4px solid #6b7280;padding-left:16px;color:#4b5563}
+a{color:#155eef}
+.meta{color:#667085}
+.note{background:#f5f8ff;border:1px solid #dbe5ff;padding:16px;border-radius:10px}
+footer{margin-top:4rem;padding-top:1.5rem;border-top:1px solid #ddd;color:#667085;font-size:.9rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Predicting Near-Term Organic Search Decline</h1>
+<p class="meta"><strong>Author:</strong> Long Nguyen · <strong>Lane:</strong> Growth / Recovery / Momentum Prediction — Content Decline Detection · <strong>Date:</strong> 2026-08-14</p>
 
+<div class="note"><strong>Abstract.</strong> Can historical search-performance and content-lifecycle signals identify content pages likely to experience a meaningful decline in organic search impressions over the following 30 days? This project uses the FlyRank pseudonymized warehouse and a page-client prediction grain, with March 2026 features and April 2026 outcomes. Logistic Regression uses five pre-decision features and initially improves the transparent review baseline at the top of the ranking. However, grouped-by-client validation produces a lower and more conservative estimate of generalization. The final output is therefore a human-reviewed decision-support queue rather than an autonomous content-management system.</div>
+
+<h2>1. Problem framing</h2>
+<p>The decision is which content pages an SEO/content team should inspect first because their historical signals indicate elevated measured risk of near-term organic-impression decline.</p>
+<p>The unit of analysis is one content page for one client at one prediction point. The output is a ranked risk score, reason code, and suggested review action.</p>
+<blockquote>Can historical search-performance and content-lifecycle signals identify pages likely to experience a &gt;20% decline in organic search impressions over the next 30 days?</blockquote>
+<p>The feature window is 2026-03-01 to 2026-03-31; the prediction point is 2026-04-01; and the target window is 2026-04-01 to 2026-04-30.</p>
+
+<h2>2. Data safety</h2>
+<p>The analysis uses the FlyRank internship warehouse: <code>dim_clients</code>, <code>dim_content</code>, <code>fact_content_daily_performance</code>, and <code>fact_content_query_90d</code>. The daily fact table contains 78,835,655 rows covering 2025-01-27 through 2026-06-30.</p>
+<p>The final five model features were <code>imp_prev30</code>, <code>clk_prev30</code>, <code>avg_position_prev30</code>, <code>days_with_impressions</code>, and <code>content_age_days</code>.</p>
+<p>Future measurements, label-derived fields, product decision fields, and pseudonymous identifiers as predictive inputs were excluded. A deliberate leakage test using <code>impression_change_pct</code> raised ROC-AUC from 0.65 to 1.00, confirming that the audit could detect future-window leakage; the feature was removed.</p>
+
+<h2>3. Baseline</h2>
+<p>The transparent baseline scores pages that are both meaningfully visible and stale, then ranks qualifying pages by historical impressions.</p>
+<table><tr><th>Metric</th><th>Baseline</th></tr><tr><td>Precision@20</td><td>0.35</td></tr><tr><td>Precision@50</td><td>0.38</td></tr><tr><td>Precision@100</td><td>0.36</td></tr></table>
+
+<h2>4. Model / analysis</h2>
+<p>Logistic Regression was selected first because the task is binary classification and a readable model is useful before adding complexity. Random Forest was evaluated as a nonlinear alternative.</p>
+<table><tr><th>Model</th><th>P@20</th><th>P@50</th><th>P@100</th><th>ROC-AUC</th><th>Precision</th><th>Recall</th><th>F1</th><th>Base rate</th></tr>
+<tr><td>Logistic Regression</td><td>0.60</td><td>0.46</td><td>0.54</td><td>0.62</td><td>0.472</td><td>0.656</td><td>0.549</td><td>0.402</td></tr>
+<tr><td>Random Forest</td><td>0.45</td><td>0.44</td><td>0.43</td><td>0.58</td><td>0.436</td><td>0.604</td><td>0.506</td><td>0.402</td></tr>
+<tr><td>Baseline</td><td>0.35</td><td>0.38</td><td>0.36</td><td>—</td><td>—</td><td>—</td><td>—</td><td>0.402</td></tr>
+</table>
+
+<h2>5. Evaluation</h2>
+<p>The more conservative Week-6 validation grouped rows by client: 84,384 training rows, 16,509 test rows, 32 training clients, 11 test clients, and zero client overlap.</p>
+<table><tr><th>Validation</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>ROC-AUC</th><th>P@20</th><th>P@50</th><th>P@100</th></tr>
+<tr><td>Week-5 random split</td><td>0.601</td><td>0.579</td><td>0.823</td><td>0.680</td><td>0.650</td><td>0.65</td><td>0.66</td><td>0.64</td></tr>
+<tr><td>Grouped by client</td><td>0.512</td><td>0.440</td><td>0.786</td><td>0.564</td><td>0.621</td><td>0.60</td><td>0.46</td><td>0.54</td></tr>
+</table>
+<p>The gap between the random and grouped evaluations is an important finding: the random split gives a more optimistic estimate than the client-held-out evaluation.</p>
+
+<h2>6. Interpretation</h2>
+<p>Grouped permutation importance placed <code>days_with_impressions</code> first (0.0980), followed by <code>clk_prev30</code> (0.0695). The remaining features had much smaller measured contributions.</p>
+<p>The Week-5 error analysis contained 4,874 false positives and 2,280 false negatives. High-scoring false positives show why model scores require human review: high historical exposure does not guarantee future decline.</p>
+<p>The freshness audit was not monotonic: measured decline risk was 46.63% for pages ≤90 days old, 55.05% for 91–180 days, 53.83% for 181–365 days, and 52.54% for &gt;365 days. Therefore the evidence does not support a simple “older always means riskier” claim.</p>
+
+<h2>7. Ranked recommendations</h2>
+<ol>
+<li><strong>High-risk + high-exposure:</strong> prioritize manual performance review.</li>
+<li><strong>High-risk + stale + visible:</strong> review freshness and content relevance.</li>
+<li><strong>High-risk + weak position:</strong> review search intent, relevance, and ranking context.</li>
+<li><strong>High-risk + General manual review</strong> broader manual review.</li>
+</ol>
+<p>Before acting, a reviewer should check search intent, relevance, freshness, search context, historical evidence, business context, technical issues, and measurement quality.</p>
+<p><strong>Do not automate:</strong> publishing, rewriting, deleting, changing search intent, changing canonical URLs, changing internal linking, changing metadata without review, declaring a ranking failure, claiming that a refresh will improve traffic, claiming Google's causal ranking mechanism, or overriding business priorities.</p>
+
+<h2>8. Reproducibility</h2>
+<p>The analysis is organized in <code>work/notebooks/</code> from research question through baseline, modeling, validation, action playbook, and capstone. The repository uses Python, pandas, NumPy, DuckDB, Hugging Face access, scikit-learn, and matplotlib. The main modeling seed is 42.</p>
+<p><a href="https://github.com/LNDOTIS/FlyRank-AI-Internship---Machine-Learning">View the full repository and notebooks →</a></p>
+
+<h2>9. Acknowledgments &amp; data credit</h2>
+<p>Built on the <strong>FlyRank ML Internship dataset</strong>. Data credit: <a href="https://flyrank.ai">FlyRank</a>.</p>
+
+<footer>Claims are framed as observed, measured, directional, and decision-support. No causal claim is made about refreshing content or Google's ranking mechanism.</footer>
+</main>
+</body>
+</html>
