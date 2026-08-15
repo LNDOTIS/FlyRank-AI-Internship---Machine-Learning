@@ -482,6 +482,14 @@
       flex-wrap: wrap;
     }
 
+
+    .top20-table { min-width: 1350px; }
+    .top20-table th, .top20-table td { vertical-align: top; }
+    .probability-cell { min-width: 120px; }
+    .probability-bar { height: 7px; width: 100%; margin-top: 6px; background: var(--surface-soft); border-radius: 999px; overflow: hidden; }
+    .probability-bar span { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
+    .table-note { color: var(--muted); font-size: 14px; }
+
     /* =========================
        Responsive
     ========================= */
@@ -544,6 +552,316 @@
         padding: 19px;
       }
     }
+
+
+    /* =========================
+       Dynamic visual layer
+    ========================= */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -30% -10% auto;
+      height: 520px;
+      background:
+        radial-gradient(circle at 18% 40%, rgba(37, 99, 235, 0.10), transparent 32%),
+        radial-gradient(circle at 78% 25%, rgba(21, 128, 61, 0.08), transparent 28%),
+        radial-gradient(circle at 55% 75%, rgba(194, 65, 12, 0.06), transparent 30%);
+      pointer-events: none;
+      animation: heroGlow 12s ease-in-out infinite alternate;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-visual {
+      margin-top: 42px;
+      position: relative;
+      min-height: 220px;
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.76);
+      box-shadow: 0 18px 60px rgba(16,24,40,0.08);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(37,99,235,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37,99,235,0.05) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(to bottom, black, transparent);
+      pointer-events: none;
+    }
+
+    .pipeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      padding: 34px;
+      min-height: 220px;
+      align-items: center;
+    }
+
+    .pipeline-node {
+      position: relative;
+      z-index: 2;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.94);
+      box-shadow: 0 8px 26px rgba(16,24,40,0.06);
+      text-align: center;
+      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    }
+
+    .pipeline-node:hover {
+      transform: translateY(-5px);
+      border-color: #93c5fd;
+      box-shadow: 0 14px 34px rgba(37,99,235,0.12);
+    }
+
+    .pipeline-icon {
+      width: 42px;
+      height: 42px;
+      margin: 0 auto 10px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .pipeline-label {
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .pipeline-sub {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .pipeline-line {
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      top: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #bfdbfe, #93c5fd, #bfdbfe, transparent);
+      overflow: hidden;
+    }
+
+    .pipeline-line::after {
+      content: "";
+      position: absolute;
+      left: -20%;
+      top: -2px;
+      width: 20%;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(37,99,235,0.55);
+      animation: dataFlow 3.2s linear infinite;
+    }
+
+    .signal-orbit {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #60a5fa;
+      box-shadow: 0 0 16px rgba(37,99,235,0.55);
+      animation: orbitFloat 5s ease-in-out infinite;
+      opacity: 0.8;
+    }
+
+    .signal-orbit.one { left: 16%; top: 25%; animation-delay: -1s; }
+    .signal-orbit.two { left: 44%; top: 68%; animation-delay: -3s; }
+    .signal-orbit.three { left: 78%; top: 30%; animation-delay: -2s; }
+
+    .live-panel {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: 14px;
+    }
+
+    .live-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .live-label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+    }
+
+    .live-value {
+      margin-top: 5px;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .risk-meter {
+      height: 8px;
+      margin-top: 12px;
+      border-radius: 999px;
+      background: #eef2f7;
+      overflow: hidden;
+    }
+
+    .risk-meter-fill {
+      height: 100%;
+      width: 97.3%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #60a5fa, #2563eb, #b91c1c);
+      transform-origin: left;
+      animation: meterPulse 3s ease-in-out infinite alternate;
+    }
+
+    .queue-table td,
+    .queue-table th {
+      vertical-align: middle;
+    }
+
+    .rank-pill {
+      display: inline-flex;
+      min-width: 30px;
+      height: 30px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .probability {
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .probability-bar {
+      display: inline-block;
+      width: 80px;
+      height: 6px;
+      margin-left: 8px;
+      vertical-align: middle;
+      border-radius: 999px;
+      background: #eef2f7;
+      overflow: hidden;
+    }
+
+    .probability-bar span {
+      display: block;
+      height: 100%;
+      width: var(--prob);
+      background: var(--accent);
+      border-radius: inherit;
+      transform-origin: left;
+      animation: growBar 1.2s ease both;
+    }
+
+    .reason-mini {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 11px;
+      background: var(--surface-soft);
+      padding: 4px 7px;
+      border-radius: 5px;
+      color: #475467;
+      white-space: nowrap;
+    }
+
+    .queue-action {
+      font-weight: 700;
+      color: #344054;
+    }
+
+    .queue-note {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .metric-value[data-count] {
+      font-variant-numeric: tabular-nums;
+    }
+
+    @keyframes dataFlow {
+      from { left: -20%; }
+      to { left: 100%; }
+    }
+
+    @keyframes orbitFloat {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(22px, -14px, 0) scale(1.25); }
+    }
+
+    @keyframes heroGlow {
+      from { transform: translate3d(-1%, 0, 0) scale(1); }
+      to { transform: translate3d(1%, 2%, 0) scale(1.05); }
+    }
+
+    @keyframes meterPulse {
+      from { transform: scaleX(0.96); opacity: 0.78; }
+      to { transform: scaleX(1); opacity: 1; }
+    }
+
+    @keyframes growBar {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
   </style>
 </head>
 
@@ -580,6 +898,52 @@
         <span class="tag">August 31, 2026</span>
       </div>
 
+      <div class="hero-visual" aria-label="Animated machine learning decision pipeline">
+        <div class="signal-orbit one"></div>
+        <div class="signal-orbit two"></div>
+        <div class="signal-orbit three"></div>
+        <div class="pipeline-line"></div>
+
+        <div class="pipeline">
+          <div class="pipeline-node">
+            <div class="pipeline-icon">DATA</div>
+            <div class="pipeline-label">Historical signals</div>
+            <div class="pipeline-sub">Impressions · clicks · position</div>
+          </div>
+
+          <div class="pipeline-node">
+            <div class="pipeline-icon">ML</div>
+            <div class="pipeline-label">Logistic Regression</div>
+            <div class="pipeline-sub">Five pre-decision features</div>
+          </div>
+
+          <div class="pipeline-node">
+            <div class="pipeline-icon">RISK</div>
+            <div class="pipeline-label">Decline probability</div>
+            <div class="pipeline-sub">Rank pages by measured risk</div>
+          </div>
+
+          <div class="pipeline-node">
+            <div class="pipeline-icon">HUMAN</div>
+            <div class="pipeline-label">Review queue</div>
+            <div class="pipeline-sub">Human decision support</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-panel">
+        <div class="live-card">
+          <div class="live-label">Live model signal</div>
+          <div class="live-value"><span id="liveProbability">0.973</span> decline probability</div>
+          <div class="risk-meter"><div class="risk-meter-fill"></div></div>
+        </div>
+        <div class="live-card">
+          <div class="live-label">Top review priority</div>
+          <div class="live-value">#<span id="liveRank">1</span></div>
+          <div class="queue-note">High-risk + high-exposure</div>
+        </div>
+      </div>
+
     </div>
 
   </header>
@@ -606,8 +970,9 @@
         <a href="#evaluation">5. Evaluation</a>
         <a href="#interpretation">6. Interpretation</a>
         <a href="#recommendation">7. Recommendation</a>
-        <a href="#reproducibility">8. Reproducibility</a>
-        <a href="#acknowledgments">9. Acknowledgments</a>
+        <a href="#top20">Top 20 action review</a>
+        <a href="#reproducibility">9. Reproducibility</a>
+        <a href="#acknowledgments">10. Acknowledgments</a>
         <a href="#claims">Claims checklist</a>
 
       </div>
@@ -1886,12 +2251,101 @@
 
 
       <!-- =========================
-           8. REPRODUCIBILITY
+           TOP 20 ACTION REVIEW
+      ========================== -->
+
+      <section id="top20" class="reveal">
+
+        <h2>Top 20 action review queue</h2>
+
+        <p>
+          The model ranking can be converted into a concrete operational queue:
+          the highest-risk pages are surfaced first, together with the reason
+          code and suggested human action. The table below shows the top 20
+          records from the action-review output.
+        </p>
+
+        <div class="callout callout-blue">
+          <div class="callout-title">How to read this queue</div>
+          <p>
+            <strong>Model rank</strong> orders pages by predicted decline probability.
+            <strong>Reason code</strong> explains the dominant review context, while
+            <strong>suggested action</strong> turns the score into a human-review task.
+            The model does not make the final content decision.
+          </p>
+        </div>
+
+        <div class="table-wrapper queue-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Client ID</th>
+                <th>Content ID</th>
+                <th>Decline probability</th>
+                <th>Reason code</th>
+                <th>Suggested action</th>
+                <th>Imp. prev30</th>
+                <th>Clicks prev30</th>
+                <th>Avg. position</th>
+                <th>Days with impressions</th>
+                <th>Content age</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="rank-pill">1</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_44f34c0a90047651</code></td><td class="probability">97.34% <span class="probability-bar" style="--prob:97.34%"><span></span></span></td><td><span class="reason-mini">high_risk_high_exposure</span></td><td class="queue-action">Prioritize for manual performance review</td><td>212,404</td><td>24</td><td>7.35</td><td><strong>31</strong></td><td>70d</td></tr>
+              <tr><td><span class="rank-pill">2</span></td><td><code>client_73cda7b4e4f265ea</code></td><td><code>content_8e1334d6356668e3</code></td><td class="probability">93.21% <span class="probability-bar" style="--prob:93.21%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>134,984</td><td>1</td><td>4.55</td><td><strong>31</strong></td><td>411d</td></tr>
+              <tr><td><span class="rank-pill">3</span></td><td><code>client_73cda7b4e4f265ea</code></td><td><code>content_fec55986a1868d62</code></td><td class="probability">91.85% <span class="probability-bar" style="--prob:91.85%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>124,075</td><td>1</td><td>9.39</td><td><strong>31</strong></td><td>411d</td></tr>
+              <tr><td><span class="rank-pill">4</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_bdf60c86117079be</code></td><td class="probability">88.30% <span class="probability-bar" style="--prob:88.30%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>112,429</td><td>12</td><td>30.77</td><td><strong>31</strong></td><td>231d</td></tr>
+              <tr><td><span class="rank-pill">5</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_559cdd76da9306de</code></td><td class="probability">87.66% <span class="probability-bar" style="--prob:87.66%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>97,378</td><td>2</td><td>36.71</td><td><strong>31</strong></td><td>217d</td></tr>
+              <tr><td><span class="rank-pill">6</span></td><td><code>client_62f4a7e64f5e0096</code></td><td><code>content_34a70fea29d15f24</code></td><td class="probability">87.52% <span class="probability-bar" style="--prob:87.52%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>143,019</td><td>43</td><td>3.22</td><td><strong>31</strong></td><td>279d</td></tr>
+              <tr><td><span class="rank-pill">7</span></td><td><code>client_62f4a7e64f5e0096</code></td><td><code>content_f6116743b00afc2d</code></td><td class="probability">87.30% <span class="probability-bar" style="--prob:87.30%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>107,584</td><td>15</td><td>9.54</td><td><strong>31</strong></td><td>194d</td></tr>
+              <tr><td><span class="rank-pill">8</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_164c1f53f13bcee1</code></td><td class="probability">87.02% <span class="probability-bar" style="--prob:87.02%"><span></span></span></td><td><span class="reason-mini">high_risk_position</span></td><td class="queue-action">Review search intent, relevance and ranking context</td><td>89,982</td><td>2</td><td>24.08</td><td><strong>31</strong></td><td>84d</td></tr>
+              <tr><td><span class="rank-pill">9</span></td><td><code>client_73cda7b4e4f265ea</code></td><td><code>content_9c057b66c30a3abb</code></td><td class="probability">85.61% <span class="probability-bar" style="--prob:85.61%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>83,834</td><td>1</td><td>11.20</td><td><strong>31</strong></td><td>244d</td></tr>
+              <tr><td><span class="rank-pill">10</span></td><td><code>client_9958f0a7ae1df715</code></td><td><code>content_cd3d932d4e1c8db0</code></td><td class="probability">85.20% <span class="probability-bar" style="--prob:85.20%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>89,332</td><td>4</td><td>7.79</td><td><strong>31</strong></td><td>448d</td></tr>
+              <tr><td><span class="rank-pill">11</span></td><td><code>client_a80fca3f171ed1de</code></td><td><code>content_9540d884af3e41fd</code></td><td class="probability">83.65% <span class="probability-bar" style="--prob:83.65%"><span></span></span></td><td><span class="reason-mini">high_risk_high_exposure</span></td><td class="queue-action">Prioritize for manual performance review</td><td>82,376</td><td>11</td><td>7.79</td><td><strong>31</strong></td><td>37d</td></tr>
+              <tr><td><span class="rank-pill">12</span></td><td><code>client_20259bd6705d81d4</code></td><td><code>content_82e35c4845e6c391</code></td><td class="probability">83.54% <span class="probability-bar" style="--prob:83.54%"><span></span></span></td><td><span class="reason-mini">high_risk_position</span></td><td class="queue-action">Review search intent, relevance and ranking context</td><td>143,907</td><td>60</td><td>22.56</td><td><strong>31</strong></td><td>156d</td></tr>
+              <tr><td><span class="rank-pill">13</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_ab91e088440ace78</code></td><td class="probability">82.52% <span class="probability-bar" style="--prob:82.52%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>77,963</td><td>5</td><td>43.17</td><td><strong>31</strong></td><td>218d</td></tr>
+              <tr><td><span class="rank-pill">14</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_73aa61dcedebbf30</code></td><td class="probability">82.20% <span class="probability-bar" style="--prob:82.20%"><span></span></span></td><td><span class="reason-mini">high_risk_position</span></td><td class="queue-action">Review search intent, relevance and ranking context</td><td>80,124</td><td>9</td><td>45.70</td><td><strong>31</strong></td><td>142d</td></tr>
+              <tr><td><span class="rank-pill">15</span></td><td><code>client_73cda7b4e4f265ea</code></td><td><code>content_425715547c6a3ea8</code></td><td class="probability">81.65% <span class="probability-bar" style="--prob:81.65%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>71,513</td><td>3</td><td>6.40</td><td><strong>31</strong></td><td>372d</td></tr>
+              <tr><td><span class="rank-pill">16</span></td><td><code>client_a80fca3f171ed1de</code></td><td><code>content_f0703fc6ae385591</code></td><td class="probability">81.48% <span class="probability-bar" style="--prob:81.48%"><span></span></span></td><td><span class="reason-mini">high_risk_high_exposure</span></td><td class="queue-action">Prioritize for manual performance review</td><td>63,201</td><td>2</td><td>10.06</td><td><strong>31</strong></td><td>37d</td></tr>
+              <tr><td><span class="rank-pill">17</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_4889078a4e2655ff</code></td><td class="probability">81.31% <span class="probability-bar" style="--prob:81.31%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>74,450</td><td>7</td><td>32.40</td><td><strong>31</strong></td><td>217d</td></tr>
+              <tr><td><span class="rank-pill">18</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_9d1e94cbd32b0a41</code></td><td class="probability">81.16% <span class="probability-bar" style="--prob:81.16%"><span></span></span></td><td><span class="reason-mini">high_risk_stale_visible</span></td><td class="queue-action">Review freshness and content relevance</td><td>81,479</td><td>13</td><td>34.64</td><td><strong>31</strong></td><td>230d</td></tr>
+              <tr><td><span class="rank-pill">19</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_b875a2f306635a58</code></td><td class="probability">81.15% <span class="probability-bar" style="--prob:81.15%"><span></span></span></td><td><span class="reason-mini">high_risk_position</span></td><td class="queue-action">Review search intent, relevance and ranking context</td><td>68,657</td><td>5</td><td>31.54</td><td><strong>31</strong></td><td>84d</td></tr>
+              <tr><td><span class="rank-pill">20</span></td><td><code>client_23a62021009f63c4</code></td><td><code>content_49267c758cdcb3a8</code></td><td class="probability">80.31% <span class="probability-bar" style="--prob:80.31%"><span></span></span></td><td><span class="reason-mini">high_risk_position</span></td><td class="queue-action">Review search intent, relevance and ranking context</td><td>73,768</td><td>12</td><td>32.66</td><td><strong>31</strong></td><td>75d</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric reveal">
+            <div class="metric-value" data-count="20">0</div>
+            <div class="metric-label">Pages surfaced in top review queue</div>
+          </div>
+          <div class="metric reveal">
+            <div class="metric-value">97.34%</div>
+            <div class="metric-label">Highest predicted decline probability</div>
+          </div>
+          <div class="metric reveal">
+            <div class="metric-value">80.31%</div>
+            <div class="metric-label">20th-ranked predicted probability</div>
+          </div>
+          <div class="metric reveal">
+            <div class="metric-value">Human</div>
+            <div class="metric-label">Final decision owner</div>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           9. REPRODUCIBILITY
       ========================== -->
 
       <section id="reproducibility">
 
-        <h2>8. Reproducibility</h2>
+        <h2>9. Reproducibility</h2>
 
         <p>
           The project is organized as a sequence of notebooks:
@@ -2026,12 +2480,12 @@
 
 
       <!-- =========================
-           9. ACKNOWLEDGMENTS
+           10. ACKNOWLEDGMENTS
       ========================== -->
 
       <section id="acknowledgments">
 
-        <h2>9. Acknowledgments &amp; data credit</h2>
+        <h2>10. Acknowledgments &amp; data credit</h2>
 
         <p>
           Built on the
@@ -2122,7 +2576,81 @@
 
 </footer>
 
+
+
+<script>
+  // Lightweight interactions: no external libraries required.
+  document.addEventListener("DOMContentLoaded", () => {
+    const probability = document.getElementById("liveProbability");
+    const rank = document.getElementById("liveRank");
+
+    // Slowly cycle through the real top-20 probabilities supplied for the queue.
+    const probabilities = [
+      0.9734324008, 0.9320838198, 0.9185004722, 0.8830425571,
+      0.8765897383, 0.8752305848, 0.8729796397, 0.8701637632,
+      0.8560850041, 0.8520385514, 0.8365448793, 0.8354355695,
+      0.8252118167, 0.8219953613, 0.8165008479, 0.8148235786,
+      0.8130709284, 0.8115556918, 0.8114615319, 0.8031054159
+    ];
+
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % probabilities.length;
+      if (probability) probability.textContent = probabilities[i].toFixed(3);
+      if (rank) rank.textContent = String(i + 1);
+    }, 2600);
+
+    // Scroll-triggered reveals keep the long report feeling alive without
+    // forcing animation on users who prefer reduced motion.
+    const revealItems = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealItems.forEach(el => observer.observe(el));
+    } else {
+      revealItems.forEach(el => el.classList.add("visible"));
+    }
+
+    // Count-up for the top-20 KPI.
+    const counters = document.querySelectorAll("[data-count]");
+    counters.forEach(counter => {
+      const target = Number(counter.dataset.count);
+      let started = false;
+      const run = () => {
+        if (started) return;
+        started = true;
+        const start = performance.now();
+        const duration = 900;
+        const tick = now => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          counter.textContent = String(Math.round(target * eased));
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting) {
+            run();
+            io.disconnect();
+          }
+        }, { threshold: 0.4 });
+        io.observe(counter);
+      } else {
+        run();
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
-
 
